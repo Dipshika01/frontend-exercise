@@ -1,11 +1,8 @@
-// src/pages/StartPage.tsx
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { getPlayers, upsertPlayer, findByNameOrEmail } from '../lib/playerStorage';
 import type { Player, BoardKey } from '../models/player';
-
-/* ---------- config ---------- */
 
 const BOARD_SIZES = [
   { label: '2 × 2 (easy)', rows: 2, cols: 2 },
@@ -33,13 +30,11 @@ function difficultyColors(d: string) {
   }
 }
 
-/* ---------- helpers ---------- */
-
 function bestOverall(p?: Player): { board: BoardKey; secs: number } | null {
   if (!p || !p.best) return null;
   const entries = Object.entries(p.best) as [BoardKey, number][];
   if (entries.length === 0) return null;
-  entries.sort((a, b) => a[1] - b[1]); // fastest first
+  entries.sort((a, b) => a[1] - b[1]);
   const [board, secs] = entries[0];
   return { board, secs };
 }
@@ -48,13 +43,11 @@ function prettyBoardKey(k: BoardKey) {
   return `${r} × ${c}`;
 }
 
-/* ---------- page ---------- */
-
 export default function StartPage() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [sizeIdx, setSizeIdx] = useState(1); // default 4×4
+  const [sizeIdx, setSizeIdx] = useState(1);
   const recent = useMemo(() => getPlayers(), []);
 
   function startGame(e: React.FormEvent) {
@@ -73,7 +66,6 @@ export default function StartPage() {
         best: {},
         history: [],
       };
-      // ✅ Only create on first time. Do NOT upsert existing here.
       upsertPlayer(player);
     }
 
@@ -99,52 +91,54 @@ export default function StartPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <main className='min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-6'>
+      <div className='w-full max-w-md'>
         {/* card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Memory Game</h1>
-            <p className="text-gray-600">Test your memory skills!</p>
+        <div className='bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]'>
+          <div className='text-center mb-8'>
+            <h1 className='text-3xl font-bold text-gray-800 mb-2'>Memory Game</h1>
+            <p className='text-gray-600'>Test your memory skills!</p>
           </div>
 
           {/* form */}
-          <form onSubmit={startGame} className="space-y-6">
+          <form onSubmit={startGame} className='space-y-6'>
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">Player Name</label>
+              <label className='mb-2 block text-sm font-medium text-gray-700'>Player Name</label>
               <input
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
+                className='w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g., Dipsikha"
+                placeholder='e.g., Dipsikha'
                 required
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">Email (optional)</label>
+              <label className='mb-2 block text-sm font-medium text-gray-700'>
+                Email (optional)
+              </label>
               <input
-                type="email"
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
+                type='email'
+                className='w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g., dips@example.com"
+                placeholder='e.g., dips@example.com'
               />
             </div>
 
             {/* Board size */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">Board size</label>
-              <div className="grid grid-cols-1 gap-3">
+              <label className='mb-2 block text-sm font-medium text-gray-700'>Board size</label>
+              <div className='grid grid-cols-1 gap-3'>
                 {BOARD_SIZES.map((s, i) => {
                   const active = i === sizeIdx;
                   const diff = getDifficulty(s.label);
                   return (
-                    <label key={s.label} className="cursor-pointer">
+                    <label key={s.label} className='cursor-pointer'>
                       <input
-                        type="radio"
-                        name="board-size"
-                        className="sr-only"
+                        type='radio'
+                        name='board-size'
+                        className='sr-only'
                         checked={active}
                         onChange={() => setSizeIdx(i)}
                       />
@@ -155,9 +149,9 @@ export default function StartPage() {
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <span className="font-semibold text-gray-800">
+                        <div className='flex items-center justify-between'>
+                          <div className='flex items-center'>
+                            <span className='font-semibold text-gray-800'>
                               {s.label.split(' (')[0]}
                             </span>
                             <span
@@ -168,7 +162,7 @@ export default function StartPage() {
                               {diff}
                             </span>
                           </div>
-                          <div className="text-sm text-gray-500">{s.rows * s.cols} cards</div>
+                          <div className='text-sm text-gray-500'>{s.rows * s.cols} cards</div>
                         </div>
                       </div>
                     </label>
@@ -178,8 +172,8 @@ export default function StartPage() {
             </div>
 
             <button
-              type="submit"
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:scale-105 hover:from-purple-600 hover:to-pink-600 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
+              type='submit'
+              className='flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:scale-105 hover:from-purple-600 hover:to-pink-600 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400'
             >
               Start Game
             </button>
@@ -188,28 +182,28 @@ export default function StartPage() {
 
         {/* recent players */}
         {recent.length > 0 && (
-          <section className="mt-6 rounded-2xl bg-white/90 p-5 shadow-xl backdrop-blur">
-            <h2 className="mb-3 text-sm font-semibold text-gray-800">Continue as</h2>
+          <section className='mt-6 rounded-2xl bg-white/90 p-5 shadow-xl backdrop-blur'>
+            <h2 className='mb-3 text-sm font-semibold text-gray-800'>Continue as</h2>
 
-            <ul className="grid grid-cols-1 gap-2">
+            <ul className='grid grid-cols-1 gap-2'>
               {recent.slice(0, 5).map((p) => {
                 const best = bestOverall(p);
                 const value = best ? `${best.secs}s (${prettyBoardKey(best.board)})` : '—';
                 return (
                   <li key={p.id}>
                     <button
-                      type="button"
+                      type='button'
                       onClick={() => quickPlay(p)}
-                      className="flex w-full items-center justify-between rounded-xl border border-gray-200 px-3 py-2 transition-colors hover:border-purple-300 hover:bg-purple-50"
+                      className='flex w-full items-center justify-between rounded-xl border border-gray-200 px-3 py-2 transition-colors hover:border-purple-300 hover:bg-purple-50'
                     >
-                      <div className="truncate">
-                        <div className="font-medium text-gray-800">{p.name}</div>
-                        <div className="text-xs text-gray-500">games: {p.gamesPlayed ?? 0}</div>
+                      <div className='truncate'>
+                        <div className='font-medium text-gray-800'>{p.name}</div>
+                        <div className='text-xs text-gray-500'>games: {p.gamesPlayed ?? 0}</div>
                       </div>
 
-                      <div className="text-right text-xs">
-                        <span className="text-gray-500">best: </span>
-                        <span className="font-semibold text-purple-600">{value}</span>
+                      <div className='text-right text-xs'>
+                        <span className='text-gray-500'>best: </span>
+                        <span className='font-semibold text-purple-600'>{value}</span>
                       </div>
                     </button>
                   </li>

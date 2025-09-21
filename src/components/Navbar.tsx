@@ -18,26 +18,26 @@ export default function Navbar({
 }: Props) {
   return (
     <header
-      role="banner"
+      role='banner'
       className={`sticky top-0 z-10 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow ${className}`}
     >
-      <div className="relative h-14 px-3">
-        <div className="flex h-full items-center">
+      <div className='relative h-14 px-3'>
+        <div className='flex h-full items-center'>
           {/* LEFT: brand — link to home */}
           <Link
             to={toHomeHref}
-            className="text-base md:text-lg font-extrabold tracking-wide text-white"
+            className='text-base md:text-lg font-extrabold tracking-wide text-white'
           >
             {brandText}
           </Link>
 
           {/* RIGHT */}
-          <div className="ml-auto flex items-center gap-4 text-sm text-white">{right}</div>
+          <div className='ml-auto flex items-center gap-4 text-sm text-white'>{right}</div>
         </div>
 
         {/* CENTER (overlay) — let clicks pass through except its own children */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-white">
-          <div className="pointer-events-auto">{center}</div>
+        <div className='pointer-events-none absolute inset-0 flex items-center justify-center text-white'>
+          <div className='pointer-events-auto'>{center}</div>
         </div>
       </div>
     </header>

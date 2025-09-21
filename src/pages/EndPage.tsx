@@ -21,10 +21,10 @@ export default function EndPage() {
   const [gamesPlayed, setGamesPlayed] = useState(0);
   const [bestForBoard, setBestForBoard] = useState<number | undefined>(undefined);
 
-  // Strict Mode guard: ensure we record only once in dev
+  // Strict Mode guard: ensuring we record only once in dev
   const savedRef = useRef(false);
 
-  // record + read stats, then celebrate 🎉
+  // record/read stats
   useEffect(() => {
     if (savedRef.current) return;
     savedRef.current = true;
@@ -43,43 +43,40 @@ export default function EndPage() {
         setBestForBoard(p.best?.[boardKey]);
       }
     }
-
-    // small, cheerful confetti on page load
     party(1100);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idParam, name, boardKey, seconds, moves]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-1">Congratulations, {name}!</h1>
-            <p className="text-gray-600">
+    <main className='min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-6'>
+      <div className='w-full max-w-md'>
+        <div className='bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]'>
+          <div className='mb-6'>
+            <h1 className='text-3xl font-bold text-gray-800 mb-1'>Congratulations, {name}!</h1>
+            <p className='text-gray-600'>
               Board: {rows}×{cols}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Stat label="Time" value={`${seconds}s`} />
-            <Stat label="Moves" value={String(moves)} />
-            <Stat label="Games played" value={String(gamesPlayed)} />
+          <div className='grid grid-cols-2 gap-3'>
+            <Stat label='Time' value={`${seconds}s`} />
+            <Stat label='Moves' value={String(moves)} />
+            <Stat label='Games played' value={String(gamesPlayed)} />
             <Stat
               label={`Best ${rows}×${cols}`}
               value={bestForBoard != null ? `${bestForBoard}s` : '—'}
             />
           </div>
 
-          <div className="mt-6 flex gap-3">
+          <div className='mt-6 flex gap-3'>
             <button
-              type="button"
+              type='button'
               onClick={() => navigate('/')}
-              className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-purple-300 hover:bg-purple-50 transition-colors"
+              className='flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-purple-300 hover:bg-purple-50 transition-colors'
             >
               Home
             </button>
             <button
-              type="button"
+              type='button'
               onClick={() =>
                 navigate(
                   `/game?${new URLSearchParams({
@@ -90,7 +87,7 @@ export default function EndPage() {
                   }).toString()}`,
                 )
               }
-              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200"
+              className='flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200'
             >
               Play again
             </button>
@@ -103,14 +100,14 @@ export default function EndPage() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 p-4 text-center">
-      <div className="text-xs font-medium text-gray-500">{label}</div>
-      <div className="mt-1 text-xl font-bold text-gray-900">{value}</div>
+    <div className='rounded-lg border border-gray-200 p-4 text-center'>
+      <div className='text-xs font-medium text-gray-500'>{label}</div>
+      <div className='mt-1 text-xl font-bold text-gray-900'>{value}</div>
     </div>
   );
 }
 
-/** A tiny, tasteful confetti celebration for the End page. */
+/**  confetti celebration. */
 function party(durationMs = 1000) {
   const end = Date.now() + durationMs;
   const base = { startVelocity: 28, spread: 360, ticks: 60, zIndex: 9999 };

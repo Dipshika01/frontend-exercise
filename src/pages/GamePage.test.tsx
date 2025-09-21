@@ -3,10 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
 
-// ── simple sleep helper for real timers
+// for real timers
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-/* ------------------------- Mocks with proper types ------------------------- */
 
 interface MockCardProps {
   card: { id: string; pairId: string };
@@ -55,7 +53,7 @@ vi.mock('../lib/deck', () => {
   return { buildDeck, shuffle };
 });
 
-// mock only the hooks that GamePage uses
+// only the hooks that GamePage is using
 const navigateMock = vi.fn();
 let searchQuery = '?name=Dips&rows=2&cols=2&id=demo';
 vi.mock('react-router-dom', () => ({
@@ -63,11 +61,9 @@ vi.mock('react-router-dom', () => ({
   useLocation: () => ({ search: searchQuery }),
 }));
 
-// import the page after mocks
 import GamePage from './GamePage';
 
-/* --------------------------------- Tests ---------------------------------- */
-
+// Tests
 describe('GamePage (real timers)', () => {
   beforeEach(() => {
     vi.useRealTimers();
@@ -89,7 +85,7 @@ describe('GamePage (real timers)', () => {
     // pair 1
     await userEvent.click(screen.getByTestId('card-c1'));
     await userEvent.click(screen.getByTestId('card-c2'));
-    await sleep(700); // > 650ms delay in code
+    await sleep(700);
 
     // pair 2
     await userEvent.click(screen.getByTestId('card-c3'));
@@ -109,7 +105,7 @@ describe('GamePage (real timers)', () => {
   it('changing board size triggers navigation to /game with new rows/cols', async () => {
     render(<GamePage />);
     const select = screen.getByRole('combobox');
-    await userEvent.selectOptions(select, '4x4'); // value `${r}x${c}` in your code
+    await userEvent.selectOptions(select, '4x4');
 
     expect(navigateMock).toHaveBeenCalled();
     const next = String(navigateMock.mock.calls.find(([p]) => String(p).startsWith('/game?'))?.[0]);

@@ -9,7 +9,6 @@ function useQuery() {
   return useMemo(() => new URLSearchParams(search), [search]);
 }
 
-/** Only 8 fronts (per requirement) */
 const FRONT_IMAGES = [
   '/plant01.jpg',
   '/plant02.jpg',
@@ -52,37 +51,27 @@ export default function GamePage() {
 
   const [zoomPct, setZoomPct] = useState(100);
 
-  /** Responsive cell sizing (no overflow) */
   const [cellPx, setCellPx] = useState(96);
-  const GAP_PX = 12; // <- must match gap-3 below
+  const GAP_PX = 12;
 
   useEffect(() => {
     function computeCell() {
       // navbar height
       const header = document.querySelector('header');
       const headerH = header?.getBoundingClientRect().height ?? 56;
-
-      // space the scaled board is allowed to use
-      const sidePad = 32; // page padding
-      const topPad = 16; // breathing room below navbar
-      const bottomPad = 24; // space for the button/margins
+      const sidePad = 32;
+      const topPad = 16;
+      const bottomPad = 24;
 
       const availWScaled = Math.max(360, window.innerWidth - sidePad * 2);
       const availHScaled = Math.max(320, window.innerHeight - headerH - topPad - bottomPad);
-
-      // account for zoom so the scaled board still fits
       const zoom = Math.max(0.5, Math.min(2, zoomPct / 100));
       const availW = availWScaled / zoom;
       const availH = availHScaled / zoom;
-
-      // subtract gaps between cards
       const freeW = Math.max(0, availW - GAP_PX * (cols - 1));
       const freeH = Math.max(0, availH - GAP_PX * (rows - 1));
-
       const byW = freeW / cols;
       const byH = freeH / rows;
-
-      // clamp so 2×2 isn't gigantic and 6×6 isn't microscopic
       const px = Math.floor(Math.max(64, Math.min(140, Math.min(byW, byH))));
       setCellPx(px);
     }
@@ -91,8 +80,6 @@ export default function GamePage() {
     window.addEventListener('resize', computeCell);
     return () => window.removeEventListener('resize', computeCell);
   }, [rows, cols, zoomPct]);
-
-  // build / reset deck when size changes
   useEffect(() => {
     const unique = shuffle([...FRONT_IMAGES]);
     const pool =
@@ -113,7 +100,6 @@ export default function GamePage() {
     }
   }, [rows, cols, pairsNeeded]);
 
-  // start timer on first flip
   useEffect(() => {
     if (!started && flipped.length > 0) {
       setStarted(true);
@@ -167,7 +153,6 @@ export default function GamePage() {
     }
   }
 
-  // finished -> End
   useEffect(() => {
     if (deck.length > 0 && deck.every((c) => c.isMatched)) {
       stopTimer();
@@ -281,7 +266,6 @@ export default function GamePage() {
 
       <main className='mx-auto flex w-full max-w-6xl flex-col items-center p-5'>
         <section className='rounded-2xl border border-white/20 bg-white/10 p-4 shadow-2xl backdrop-blur-md'>
-          {/* IMPORTANT: gap-3 == 12px → matches GAP_PX */}
           <div className='grid gap-3' style={boardStyle} aria-label='game-board'>
             {deck.map((card) => (
               <Card key={card.id} card={card} backSrc={BACK_IMAGE} onFlip={handleFlip} />
