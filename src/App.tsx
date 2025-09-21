@@ -1,13 +1,18 @@
 import growyLogo from '/growy_logo.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import StartPage from "./pages/StartPage";
+import GamePage from "./pages/GamePage";
+import EndPage from "./pages/EndPage";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <h1>Growy front-end exercise</h1>
-      <img src={growyLogo} className='logo' alt='Vite logo' />
-    </>
-  )
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      <Routes>
+        <Route path="/" element={<StartPage />} />
+        <Route path="/game" element={<GamePage />} />
+        <Route path="/end" element={<EndPage />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
