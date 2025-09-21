@@ -1,30 +1,35 @@
 # Frontend Coding Exercise – Memory Game
 
-## Objective
+A small React, TypeScript, Tailwind app that implements a classic memory (pairs) game with a Start page, Game page, and End page. It saves players locally so you can “Continue as …”, tracks best times per board.
 
-Build a memory game using **React**. The goal is to demonstrate your ability to design and structure a small application, manage state, and deliver clean, maintainable code.
 
-This is a React project using **TypeScript** and **Tailwind CSS** for styling. You are free to use any tools, libraries, or approaches you prefer. Please use the packages already installed in the project first, and install anything else you need.
+## Features
 
-## Requirements
+- React app with three pages:
+  1. **Start Page** – enter your name (and optional email), pick a board size, or continue as a recent player.
+  2. **Game Page** – flip cards, match pairs, see time and moves, restart, change board size, and adjust zoom.
+  3. **End Page** – see results (time, moves), best for this board, total games played, and buttons for Home / Play again.
 
-- Create a React app with three pages:
-  1. **Start Page** – where the player can enter their name and begin the game.
-  2. **Game Page** – where the memory game is played.
-     - The player's name and a timer should be visible.
-     - The game board should consist of a grid of tiles.
-     - The game should end once all pairs have been found.
-  3. **End Page** – shown when the game is finished, displaying the player's name and result.
 - Tiles:
-  - **Back side**: use `growy_logo.svg` from the public folder.
-  - **Front side**: use images from the provided list in the public folder (selection is up to you).
-- Support different board sizes (e.g., 2x2, 6x6, 4x5).
-- Implement one additional minor feature of your choice to enhance the game experience.
-- Write unit tests for at least one component or page of your choice.
-- The project should pass **eslint** and **prettier** checks. You can run these checks using the scripts in [package.json](./package.json).
+  - **Back side**: `growy_logo.svg` from the public folder.
+  - **Front side**: 8 plant images from public folder.
 
-## Submission Instructions
+- Board Sizes: 2×2, 4×4, 4×5, 6×6
 
-1. Fork this repository to your own GitHub account.
-2. Implement your solution in the forked repository.
-3. Share the link to your fork with us when you are finished.
+## State and UX
+
+1. Timer starts on first flip; game ends when all pairs are matched.
+2. Prevents clicking extra cards while resolving a pair.
+3. Responsive board with dynamic cell size and zoom controls (bonus feature).
+4. Players' best times (per board), and game history stored in localStorage.
+
+
+## Quality
+
+1. Unit tests with Vitest + React Testing Library (3 passing tests).
+2. ESLint + Prettier configured, repo passes lint/format checks.
+
+
+
+
+
