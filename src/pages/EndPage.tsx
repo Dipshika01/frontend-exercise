@@ -1,28 +1,34 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import confetti from "canvas-confetti";
-import { getPlayer, recordResult, findByNameOrEmail } from "../lib/playerStorage";
-import type { BoardKey } from "../models/player";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import confetti from 'canvas-confetti';
+import { getPlayer, recordResult, findByNameOrEmail } from '../lib/playerStorage';
+import type { BoardKey } from '../models/player';
 
 export default function EndPage() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
   // from GamePage
-  const idParam = params.get("id") ?? "";
-  const name = params.get("name") ?? "Player";
-  const rows = Number(params.get("rows") ?? 4);
-  const cols = Number(params.get("cols") ?? 4);
-  const seconds = Number(params.get("seconds") ?? 0);
-  const moves = Number(params.get("moves") ?? 0);
+  const idParam = params.get('id') ?? '';
+  const name = params.get('name') ?? 'Player';
+  const rows = Number(params.get('rows') ?? 4);
+  const cols = Number(params.get('cols') ?? 4);
+  const seconds = Number(params.get('seconds') ?? 0);
+  const moves = Number(params.get('moves') ?? 0);
 
   const boardKey = useMemo(() => `${rows}x${cols}` as BoardKey, [rows, cols]);
 
   const [gamesPlayed, setGamesPlayed] = useState(0);
   const [bestForBoard, setBestForBoard] = useState<number | undefined>(undefined);
 
+  // Strict Mode guard: ensure we record only once in dev
+  const savedRef = useRef(false);
+
   // record + read stats, then celebrate 🎉
   useEffect(() => {
+    if (savedRef.current) return;
+    savedRef.current = true;
+
     let pid = idParam;
     if (!pid) {
       const byName = findByNameOrEmail(name);
@@ -40,6 +46,7 @@ export default function EndPage() {
 
     // small, cheerful confetti on page load
     party(1100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idParam, name, boardKey, seconds, moves]);
 
   return (
@@ -48,7 +55,9 @@ export default function EndPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]">
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-gray-800 mb-1">Congratulations, {name}!</h1>
-            <p className="text-gray-600">Board: {rows}×{cols}</p>
+            <p className="text-gray-600">
+              Board: {rows}×{cols}
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -57,14 +66,14 @@ export default function EndPage() {
             <Stat label="Games played" value={String(gamesPlayed)} />
             <Stat
               label={`Best ${rows}×${cols}`}
-              value={bestForBoard != null ? `${bestForBoard}s` : "—"}
+              value={bestForBoard != null ? `${bestForBoard}s` : '—'}
             />
           </div>
 
           <div className="mt-6 flex gap-3">
             <button
               type="button"
-              onClick={() => navigate("/")}
+              onClick={() => navigate('/')}
               className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-purple-300 hover:bg-purple-50 transition-colors"
             >
               Home
@@ -78,7 +87,7 @@ export default function EndPage() {
                     name,
                     rows: String(rows),
                     cols: String(cols),
-                  }).toString()}`
+                  }).toString()}`,
                 )
               }
               className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200"

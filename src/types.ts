@@ -1,15 +1,15 @@
 export type BoardKey = `${number}x${number}`;
 
 export interface GameResult {
-  id: string;            // uuid
-  board: BoardKey;       // e.g. "4x4"
-  timeMs: number;        // total milliseconds
-  moves: number;         // optional: how many flips/pairs
-  finishedAt: string;    // ISO date
+  id: string; // uuid
+  board: BoardKey; // e.g. "4x4"
+  timeMs: number; // total milliseconds
+  moves: number; // optional: how many flips/pairs
+  finishedAt: string; // ISO date
 }
 
 export interface UserProfile {
-  id: string;            // uuid
+  id: string; // uuid
   name: string;
   createdAt: string;
   lastSeenAt: string;

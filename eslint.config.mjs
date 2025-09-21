@@ -1,70 +1,63 @@
-import { defineConfig } from 'eslint/config'
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
-import prettier from 'eslint-plugin-prettier'
-import tsParser from '@typescript-eslint/parser'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
+import js from '@eslint/js';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import prettierPlugin from 'eslint-plugin-prettier';
+import tseslint from 'typescript-eslint';
+import globals from 'globals';
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-})
-
-export default defineConfig([
+export default [
   {
-    extends: fixupConfigRules(
-      compat.extends(
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:react-hooks/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:prettier/recommended'
-      )
-    ),
+    ignores: ['dist', 'build', 'coverage', 'node_modules'],
+  },
 
-    plugins: {
-      react: fixupPluginRules(react),
-      'react-hooks': fixupPluginRules(reactHooks),
-      '@typescript-eslint': fixupPluginRules(typescriptEslint),
-      prettier: fixupPluginRules(prettier)
-    },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
 
+  reactPlugin.configs.flat.recommended,
+
+  {
+    files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
-      parser: tsParser
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
-
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooks,
+      prettier: prettierPlugin,
+    },
     settings: {
-      react: {
-        version: 'detect'
-      }
+      react: { version: 'detect' },
     },
-
     rules: {
+      'prettier/prettier': 'error',
       'react/react-in-jsx-scope': 'off',
-      'react/jsx-fragments': 'error',
+      'react/prop-types': 'off', 
       'react/jsx-no-undef': 'error',
-      'react/prop-types': 'error',
-      'react/display-name': 'error',
       'react/self-closing-comp': 'error',
-      'react/no-unescaped-entities': 'error',
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
-      'react/no-children-prop': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+
       '@typescript-eslint/no-unused-expressions': [
         'error',
-        {
-          allowShortCircuit: true,
-          allowTernary: true
-        }
-      ]
-    }
-  }
-])
+        { allowShortCircuit: true, allowTernary: true },
+      ],
+      '@typescript-eslint/no-explicit-any': 'error',
+    },
+  },
+
+  {
+    files: ['**/*.test.{ts,tsx}', '**/__tests__/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+];

@@ -1,6 +1,6 @@
-import type { Player, BoardKey, GameResult } from "../models/player";
+import type { Player, BoardKey, GameResult } from '../models/player';
 
-const KEY = "memgame.players.v1";
+const KEY = 'memgame.players.v1';
 
 function readAll(): Player[] {
   try {
@@ -25,7 +25,7 @@ export function findByNameOrEmail(name: string, email?: string) {
   return all.find(
     (p) =>
       p.name.trim().toLowerCase() === name.trim().toLowerCase() ||
-      (!!email && p.email?.toLowerCase() === email.toLowerCase())
+      (!!email && p.email?.toLowerCase() === email.toLowerCase()),
   );
 }
 export function upsertPlayer(p: Player) {
@@ -37,12 +37,7 @@ export function upsertPlayer(p: Player) {
 }
 
 /** for EndPage after finishing a game */
-export function recordResult(
-  id: string,
-  board: BoardKey,
-  seconds: number,
-  moves: number
-) {
+export function recordResult(id: string, board: BoardKey, seconds: number, moves: number) {
   const all = readAll();
   const i = all.findIndex((p) => p.id === id);
   if (i < 0) return;

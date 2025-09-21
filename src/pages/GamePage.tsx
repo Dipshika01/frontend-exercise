@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import Card from "../components/Card";
-import Navbar from "../components/Navbar";
-import { buildDeck, shuffle, type Card as CardType } from "../lib/deck";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Card from '../components/Card';
+import Navbar from '../components/Navbar';
+import { buildDeck, shuffle, type Card as CardType } from '../lib/deck';
 
 function useQuery() {
   const { search } = useLocation();
@@ -11,33 +11,33 @@ function useQuery() {
 
 /** Only 8 fronts (per requirement) */
 const FRONT_IMAGES = [
-  "/plant01.jpg",
-  "/plant02.jpg",
-  "/plant03.jpg",
-  "/plant04.jpg",
-  "/plant05.jpg",
-  "/plant06.jpg",
-  "/plant07.jpg",
-  "/plant08.jpg",
+  '/plant01.jpg',
+  '/plant02.jpg',
+  '/plant03.jpg',
+  '/plant04.jpg',
+  '/plant05.jpg',
+  '/plant06.jpg',
+  '/plant07.jpg',
+  '/plant08.jpg',
 ];
 
-const BACK_IMAGE = "/growy_logo.svg";
+const BACK_IMAGE = '/growy_logo.svg';
 
 const SIZE_OPTIONS = [
-  { label: "2 × 2", r: 2, c: 2 },
-  { label: "4 × 4", r: 4, c: 4 },
-  { label: "4 × 5", r: 4, c: 5 },
-  { label: "6 × 6", r: 6, c: 6 },
+  { label: '2 × 2', r: 2, c: 2 },
+  { label: '4 × 4', r: 4, c: 4 },
+  { label: '4 × 5', r: 4, c: 5 },
+  { label: '6 × 6', r: 6, c: 6 },
 ];
 
 export default function GamePage() {
   const q = useQuery();
   const navigate = useNavigate();
 
-  const id = q.get("id") || "";
-  const name = q.get("name") || "Player";
-  const rows = Number(q.get("rows") || 4);
-  const cols = Number(q.get("cols") || 4);
+  const id = q.get('id') || '';
+  const name = q.get('name') || 'Player';
+  const rows = Number(q.get('rows') || 4);
+  const cols = Number(q.get('cols') || 4);
   const total = rows * cols;
   const pairsNeeded = Math.floor(total / 2);
 
@@ -59,19 +59,16 @@ export default function GamePage() {
   useEffect(() => {
     function computeCell() {
       // navbar height
-      const header = document.querySelector("header");
+      const header = document.querySelector('header');
       const headerH = header?.getBoundingClientRect().height ?? 56;
 
       // space the scaled board is allowed to use
-      const sidePad = 32;    // page padding
-      const topPad = 16;     // breathing room below navbar
-      const bottomPad = 24;  // space for the button/margins
+      const sidePad = 32; // page padding
+      const topPad = 16; // breathing room below navbar
+      const bottomPad = 24; // space for the button/margins
 
       const availWScaled = Math.max(360, window.innerWidth - sidePad * 2);
-      const availHScaled = Math.max(
-        320,
-        window.innerHeight - headerH - topPad - bottomPad
-      );
+      const availHScaled = Math.max(320, window.innerHeight - headerH - topPad - bottomPad);
 
       // account for zoom so the scaled board still fits
       const zoom = Math.max(0.5, Math.min(2, zoomPct / 100));
@@ -91,8 +88,8 @@ export default function GamePage() {
     }
 
     computeCell();
-    window.addEventListener("resize", computeCell);
-    return () => window.removeEventListener("resize", computeCell);
+    window.addEventListener('resize', computeCell);
+    return () => window.removeEventListener('resize', computeCell);
   }, [rows, cols, zoomPct]);
 
   // build / reset deck when size changes
@@ -133,14 +130,14 @@ export default function GamePage() {
     }
   }
 
-  function handleFlip(id: string) {
+  function handleFlip(cid: string) {
     if (isLocked) return;
 
-    const card = deck.find((c) => c.id === id);
+    const card = deck.find((c) => c.id === cid);
     if (!card || card.isMatched || card.isFlipped) return;
 
-    const nextDeck = deck.map((c) => (c.id === id ? { ...c, isFlipped: true } : c));
-    const nextFlipped = [...flipped, id];
+    const nextDeck = deck.map((c) => (c.id === cid ? { ...c, isFlipped: true } : c));
+    const nextFlipped = [...flipped, cid];
 
     setDeck(nextDeck);
     setFlipped(nextFlipped);
@@ -156,11 +153,11 @@ export default function GamePage() {
 
         if (a.pairId === b.pairId) {
           setDeck((prev) =>
-            prev.map((c) => (c.pairId === a.pairId ? { ...c, isMatched: true } : c))
+            prev.map((c) => (c.pairId === a.pairId ? { ...c, isMatched: true } : c)),
           );
         } else {
           setDeck((prev) =>
-            prev.map((c) => (c.id === aId || c.id === bId ? { ...c, isFlipped: false } : c))
+            prev.map((c) => (c.id === aId || c.id === bId ? { ...c, isFlipped: false } : c)),
           );
         }
 
@@ -208,7 +205,7 @@ export default function GamePage() {
   }
 
   function onSizeChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const [r, c] = e.target.value.split("x").map(Number);
+    const [r, c] = e.target.value.split('x').map(Number);
     const params = new URLSearchParams({
       id,
       name,
@@ -225,44 +222,43 @@ export default function GamePage() {
     gridTemplateColumns: `repeat(${cols}, ${cellPx}px)`,
     gridAutoRows: `${cellPx}px`,
     transform: `scale(${zoomPct / 100})`,
-    transformOrigin: "center top",
+    transformOrigin: 'center top',
   };
 
   return (
-    // bg-gradient-to-br from-purple-400 via-pink-500 to-red-500
-    <div className="min-h-screen ">
+    <div className='min-h-screen '>
       <Navbar
-        brandText="MemoryGame"
+        brandText='MemoryGame'
         center={
-          <div className="flex items-center gap-3 text-sm text-white">
-            <label className="flex items-center gap-2">
+          <div className='flex items-center gap-3 text-sm text-white'>
+            <label className='flex items-center gap-2'>
               <span>Board</span>
               <select
-                className="rounded border border-white/40 bg-white/10 px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-white/80 [&>option]:text-black"
+                className='rounded border border-white/40 bg-white/10 px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-white/80 [&>option]:text-black'
                 value={`${rows}x${cols}`}
                 onChange={onSizeChange}
               >
                 {SIZE_OPTIONS.map((s) => (
-                  <option key={`${s.r}x${s.c}`} value={`${s.r}x${s.c}`} className="text-black">
+                  <option key={`${s.r}x${s.c}`} value={`${s.r}x${s.c}`} className='text-black'>
                     {s.label}
                   </option>
                 ))}
               </select>
             </label>
 
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               <button
-                className="h-7 w-7 rounded border border-white/40 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/80"
+                className='h-7 w-7 rounded border border-white/40 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/80'
                 onClick={() => changeZoom(-10)}
-                aria-label="Zoom out"
+                aria-label='Zoom out'
               >
                 –
               </button>
-              <span className="tabular-nums text-white">{zoomPct}%</span>
+              <span className='tabular-nums text-white'>{zoomPct}%</span>
               <button
-                className="h-7 w-7 rounded border border-white/40 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/80"
+                className='h-7 w-7 rounded border border-white/40 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/80'
                 onClick={() => changeZoom(10)}
-                aria-label="Zoom in"
+                aria-label='Zoom in'
               >
                 +
               </button>
@@ -270,34 +266,32 @@ export default function GamePage() {
           </div>
         }
         right={
-          <div className="flex items-center gap-4 text-sm text-white">
-            <span className="hidden sm:inline">👤 {name}</span>
+          <div className='flex items-center gap-4 text-sm text-white'>
+            <span className='hidden sm:inline'>👤 {name}</span>
             <span>
-              Time: <span className="tabular-nums text-white">{formatTime(seconds)}</span>
+              Time: <span className='tabular-nums text-white'>{formatTime(seconds)}</span>
             </span>
             <span>
-              Moves: <span className="tabular-nums text-white">{moves}</span>
+              Moves: <span className='tabular-nums text-white'>{moves}</span>
             </span>
-            <span className="hidden sm:inline">Board: {currentLabel}</span>
+            <span className='hidden sm:inline'>Board: {currentLabel}</span>
           </div>
         }
       />
 
-      {/* center the board; panel hugs the grid; button sits right below it */}
-      <main className="mx-auto flex w-full max-w-6xl flex-col items-center p-5">
-        <section className="rounded-2xl border border-white/20 bg-white/10 p-4 shadow-2xl backdrop-blur-md">
+      <main className='mx-auto flex w-full max-w-6xl flex-col items-center p-5'>
+        <section className='rounded-2xl border border-white/20 bg-white/10 p-4 shadow-2xl backdrop-blur-md'>
           {/* IMPORTANT: gap-3 == 12px → matches GAP_PX */}
-          <div className="grid gap-3" style={boardStyle} aria-label="game-board">
+          <div className='grid gap-3' style={boardStyle} aria-label='game-board'>
             {deck.map((card) => (
-              <Card key={card.id} card={card as any} backSrc={BACK_IMAGE} onFlip={handleFlip} />
+              <Card key={card.id} card={card} backSrc={BACK_IMAGE} onFlip={handleFlip} />
             ))}
           </div>
         </section>
 
-        {/* Right below the board; never overlaps */}
         <button
           onClick={restart}
-          className="mt-4 rounded-lg px-5 py-2 font-medium text-white shadow-lg shadow-black/20 bg-gradient-to-r from-purple-500 to-pink-500 hover:brightness-110"
+          className='mt-4 rounded-lg px-5 py-2 font-medium text-white shadow-lg shadow-black/20 bg-gradient-to-r from-purple-500 to-pink-500 hover:brightness-110'
         >
           Restart
         </button>
@@ -307,7 +301,9 @@ export default function GamePage() {
 }
 
 function formatTime(totalSeconds: number) {
-  const m = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
-  const s = (totalSeconds % 60).toString().padStart(2, "0");
+  const m = Math.floor(totalSeconds / 60)
+    .toString()
+    .padStart(2, '0');
+  const s = (totalSeconds % 60).toString().padStart(2, '0');
   return `${m}:${s}`;
 }

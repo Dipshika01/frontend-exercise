@@ -8,9 +8,9 @@ export function shuffle<T>(arr: T[]) {
 }
 
 export type Card = {
-  id: string;       // unique tile id
-  pairId: string;   // same for the two matching tiles
-  img: string;      
+  id: string; // unique tile id
+  pairId: string; // same for the two matching tiles
+  img: string;
   isFlipped: boolean;
   isMatched: boolean;
 };
