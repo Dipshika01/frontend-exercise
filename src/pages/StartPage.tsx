@@ -97,7 +97,7 @@ export default function StartPage() {
         {/* card */}
         <div className='bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]'>
           <div className='text-center mb-8'>
-            <h1 className='text-3xl font-bold text-gray-800 mb-2'>Memory Game</h1>
+            <h1 className='text-3xl font-bold text-gray-800 mb-2'>Brain Relay</h1>
             <p className='text-gray-600'>Test your memory skills!</p>
           </div>
 

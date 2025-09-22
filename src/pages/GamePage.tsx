@@ -217,7 +217,7 @@ export default function GamePage() {
   return (
     <div className='min-h-screen '>
       <Navbar
-        brandText='MemoryGame'
+        brandText='BrainRelay'
         center={
           <div className='flex items-center gap-3 text-sm text-white'>
             <label className='flex items-center gap-2'>
