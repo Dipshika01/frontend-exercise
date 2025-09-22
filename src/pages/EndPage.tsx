@@ -47,7 +47,7 @@ export default function EndPage() {
   }, [idParam, name, boardKey, seconds, moves]);
 
   return (
-    <main className='min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-6'>
+    <main className='min-h-screen bg-gradient-to-br from-purple-500 to-[#facbe2] flex items-center justify-center p-6'>
       <div className='w-full max-w-md'>
         <div className='bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]'>
           <div className='mb-6'>
@@ -87,7 +87,7 @@ export default function EndPage() {
                   }).toString()}`,
                 )
               }
-              className='flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200'
+              className='flex-1 bg-[#32317a] text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200'
             >
               Play again
             </button>

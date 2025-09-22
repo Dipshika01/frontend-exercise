@@ -52,34 +52,38 @@ export default function GamePage() {
   const [zoomPct, setZoomPct] = useState(100);
 
   const [cellPx, setCellPx] = useState(96);
-  const GAP_PX = 12;
+
+  const isDense = rows >= 6 || cols >= 6;
+  const gapPx = isDense ? 8 : 12;
 
   useEffect(() => {
     function computeCell() {
-      // navbar height
       const header = document.querySelector('header');
       const headerH = header?.getBoundingClientRect().height ?? 56;
       const sidePad = 32;
       const topPad = 16;
       const bottomPad = 24;
-
       const availWScaled = Math.max(360, window.innerWidth - sidePad * 2);
       const availHScaled = Math.max(320, window.innerHeight - headerH - topPad - bottomPad);
       const zoom = Math.max(0.5, Math.min(2, zoomPct / 100));
       const availW = availWScaled / zoom;
       const availH = availHScaled / zoom;
-      const freeW = Math.max(0, availW - GAP_PX * (cols - 1));
-      const freeH = Math.max(0, availH - GAP_PX * (rows - 1));
+      const freeW = Math.max(0, availW - gapPx * (cols - 1));
+      const freeH = Math.max(0, availH - gapPx * (rows - 1));
       const byW = freeW / cols;
       const byH = freeH / rows;
-      const px = Math.floor(Math.max(64, Math.min(140, Math.min(byW, byH))));
+
+      const maxPx = rows >= 6 || cols >= 6 ? 92 : rows >= 5 || cols >= 5 ? 108 : 140;
+
+      const px = Math.floor(Math.max(64, Math.min(maxPx, Math.min(byW, byH))));
       setCellPx(px);
     }
 
     computeCell();
     window.addEventListener('resize', computeCell);
     return () => window.removeEventListener('resize', computeCell);
-  }, [rows, cols, zoomPct]);
+  }, [rows, cols, zoomPct, gapPx]);
+
   useEffect(() => {
     const unique = shuffle([...FRONT_IMAGES]);
     const pool =
@@ -252,7 +256,7 @@ export default function GamePage() {
         }
         right={
           <div className='flex items-center gap-4 text-sm text-white'>
-            <span className='hidden sm:inline'>👤 {name}</span>
+            <span className='hidden sm:inline'>{name}</span>
             <span>
               Time: <span className='tabular-nums text-white'>{formatTime(seconds)}</span>
             </span>
@@ -266,7 +270,11 @@ export default function GamePage() {
 
       <main className='mx-auto flex w-full max-w-6xl flex-col items-center p-5'>
         <section className='rounded-2xl border border-white/20 bg-white/10 p-4 shadow-2xl backdrop-blur-md'>
-          <div className='grid gap-3' style={boardStyle} aria-label='game-board'>
+          <div
+            className={`grid ${isDense ? 'gap-2' : 'gap-3'}`}
+            style={boardStyle}
+            aria-label='game-board'
+          >
             {deck.map((card) => (
               <Card key={card.id} card={card} backSrc={BACK_IMAGE} onFlip={handleFlip} />
             ))}
@@ -275,7 +283,7 @@ export default function GamePage() {
 
         <button
           onClick={restart}
-          className='mt-4 rounded-lg px-5 py-2 font-medium text-white shadow-lg shadow-black/20 bg-gradient-to-r from-purple-500 to-pink-500 hover:brightness-110'
+          className='mt-4 rounded-lg px-5 py-2 font-medium text-white shadow-lg shadow-black/20 bg-[#32317a] hover:brightness-110'
         >
           Restart
         </button>

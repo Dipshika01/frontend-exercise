@@ -91,7 +91,7 @@ export default function StartPage() {
   }
 
   return (
-    <main className='min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-6'>
+    <main className='min-h-screen bg-gradient-to-br from-purple-500 to-[#facbe2] flex items-center justify-center p-6'>
       <div className='w-full max-w-md'>
         {/* card */}
         <div className='bg-white rounded-2xl shadow-2xl p-8 transition-transform duration-300 hover:scale-[1.01]'>
@@ -122,7 +122,7 @@ export default function StartPage() {
                 className='w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder='e.g., dips@example.com'
+                placeholder='e.g., dips@gmail.com'
               />
             </div>
 
@@ -173,7 +173,7 @@ export default function StartPage() {
 
             <button
               type='submit'
-              className='flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:scale-105 hover:from-purple-600 hover:to-pink-600 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400'
+              className='flex w-full items-center justify-center gap-2 rounded-lg bg-[#32317a] px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:scale-105 hover:from-purple-600 hover:to-pink-600 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400'
             >
               Start Game
             </button>

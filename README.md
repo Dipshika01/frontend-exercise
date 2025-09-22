@@ -2,7 +2,6 @@
 
 A small React, TypeScript, Tailwind app that implements a classic memory (pairs) game with a Start page, Game page, and End page. It saves players locally so you can “Continue as …”, tracks best times per board.
 
-
 ## Features
 
 - React app with three pages:
@@ -23,13 +22,7 @@ A small React, TypeScript, Tailwind app that implements a classic memory (pairs)
 3. Responsive board with dynamic cell size and zoom controls (bonus feature).
 4. Players' best times (per board), and game history stored in localStorage.
 
-
 ## Quality
 
 1. Unit tests with Vitest + React Testing Library (3 passing tests).
 2. ESLint + Prettier configured, repo passes lint/format checks.
-
-
-
-
-

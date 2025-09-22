@@ -27,7 +27,7 @@ export default function Card({ card, backSrc, onFlip }: Props) {
         className={`absolute inset-0 h-full w-full transition-transform duration-500 [transform-style:preserve-3d]
           ${showFront ? '[transform:rotateY(180deg)]' : ''}`}
       >
-        <div className='absolute inset-0 [backface-visibility:hidden] rounded-xl bg-gradient-to-br from-purple-600 to-pink-500'>
+        <div className='absolute inset-0 [backface-visibility:hidden] rounded-xl bg-gradient-to-br from-purple-600 to-[#facbe2]'>
           <img
             src={backSrc}
             alt='Card back'
