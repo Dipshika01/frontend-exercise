@@ -7,6 +7,7 @@ import type { Player, BoardKey } from '../models/player';
 const BOARD_SIZES = [
   { label: '2 × 2 (easy)', rows: 2, cols: 2 },
   { label: '4 × 4 (normal)', rows: 4, cols: 4 },
+  { label: '4 × 5 (normal)', rows: 4, cols: 5 },
   { label: '6 × 6 (hard)', rows: 6, cols: 6 },
 ] as const;
 

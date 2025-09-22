@@ -1,4 +1,4 @@
-export type BoardKey = '2x2' | '4x4' | '6x6';
+export type BoardKey = '2x2' | '4x4' | '4x5' | '6x6';
 
 export type BestByBoard = Partial<Record<BoardKey, number>>;
 
